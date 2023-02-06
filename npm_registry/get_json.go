@@ -12,6 +12,7 @@ const npm_registry_url_part string = "https://registry.npmjs.org/%s"
 
 // to be used by other packages; a more useful data structure than a map[string]interface{}
 type NpmInfo struct {
+	json map[string]interface{}
 	repoUrl *string
 }
 
@@ -44,7 +45,7 @@ func get_json(pkg string) map[string]interface{} {
 }
 
 // returns null if the map doesn't contain a value
-func get_value_from_map(i map[string]interface{}, key string) interface{} {
+func Get_value_from_map(i map[string]interface{}, key string) interface{} {
 	value, ok := i[key]
 	if (ok) {
 		return value
@@ -57,15 +58,15 @@ func get_value_from_map(i map[string]interface{}, key string) interface{} {
 func set_repo_from_json(info *NpmInfo, data map[string]interface{}) {
 	info.repoUrl = nil
 
-	repoValue := get_value_from_map(data, "repository")
+	repoValue := Get_value_from_map(data, "repository")
 
 	// make sure there's a repo value in the result
 	if (repoValue != nil) {
-		repoType := get_value_from_map(repoValue.(map[string]interface{}), "type")
+		repoType := Get_value_from_map(repoValue.(map[string]interface{}), "type")
 
 		// check if the repo type is git, that's the only type we're preparing to handle
 		if (repoType != nil && repoType.(string) == "git") {
-			repoString := get_value_from_map(repoValue.(map[string]interface{}), "url")
+			repoString := Get_value_from_map(repoValue.(map[string]interface{}), "url")
 
 			if (repoString != nil) {
 				url := repoString.(string)
@@ -82,14 +83,12 @@ func set_repo_from_json(info *NpmInfo, data map[string]interface{}) {
 }
 
 // perform the get request then read the json into a more useful data structure
-func get_info(pkg string) *NpmInfo {
+func Get_info(pkg string) *NpmInfo {
 	data := get_json(pkg)
 
-	if (data == nil) {
-		return nil
-	}
-
 	var info *NpmInfo = new(NpmInfo)
+
+	info.json = data
 
 	set_repo_from_json(info, data)
 
