@@ -11,7 +11,7 @@ import (
 const npm_registry_url_part string = "https://registry.npmjs.org/%s"
 
 // to be used by other packages; a more useful data structure than a map[string]interface{}
-type npm_info struct {
+type NpmInfo struct {
 	repoUrl *string
 }
 
@@ -54,7 +54,7 @@ func get_value_from_map(i map[string]interface{}, key string) interface{} {
 }
 
 // sets repoUrl using the json data
-func set_repo_from_json(info *npm_info, data map[string]interface{}) {
+func set_repo_from_json(info *NpmInfo, data map[string]interface{}) {
 	info.repoUrl = nil
 
 	repoValue := get_value_from_map(data, "repository")
@@ -82,14 +82,14 @@ func set_repo_from_json(info *npm_info, data map[string]interface{}) {
 }
 
 // perform the get request then read the json into a more useful data structure
-func get_info(pkg string) *npm_info {
+func get_info(pkg string) *NpmInfo {
 	data := get_json(pkg)
 
 	if (data == nil) {
 		return nil
 	}
 
-	var info *npm_info = new(npm_info)
+	var info *NpmInfo = new(NpmInfo)
 
 	set_repo_from_json(info, data)
 
