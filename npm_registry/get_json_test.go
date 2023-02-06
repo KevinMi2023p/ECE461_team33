@@ -12,5 +12,9 @@ func TestMain(m *testing.M) {
 	}
 	fmt.Println(x["repository"].(map[string]interface{})["type"])
 	y := get_info("xml2js")
-	fmt.Println(y.repoUrl)
+	if (y.repoUrl != nil) {
+		fmt.Println(*y.repoUrl)
+	} else {
+		fmt.Println("y.repoUrl is nil")
+	}
 }
