@@ -1,6 +1,7 @@
 import sys, re
 from truckfactor.compute import main
 import truckfactor.evo_log_to_csv as eltcsv
+# library used to calculate bus size is https://github.com/HelgeCPH/truckfactor
 
 '''
 This method is mostly the same from truckfactor.evo_log_to_csv.
