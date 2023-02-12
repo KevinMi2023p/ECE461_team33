@@ -32,7 +32,7 @@ func Clone_repo(args []string) {
 	cmd := exec.Command("git", "clone", repo)
 	err := cmd.Run()
 	if err != nil {
-		fmt.Print("Something went wrong ")
+	    fmt.Print("Something went wrong ")
         return
 		// something went wrong
 	}
