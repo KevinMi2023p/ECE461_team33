@@ -1,38 +1,40 @@
-package utils
+package main
+
 //git url parser
 import (
-    "os/exec"
+	"fmt"
+	"os/exec"
 
-    giturl "https://github.com/StephenPurdue/ECE461_team33"
-
+	giturl "github.com/KevinMi2023p/ECE461_team33"
 )
 
-
 func is_git_url(repo string) bool {
-    _, errror := giturl.NewGitURL(repo) // parse URL, returns error if none git url
+	_, errror := giturl.NewGitURL(repo) // parse URL, returns error if none git url
 
-    return errror == nil
+	return errror == nil
 }
 
-//CloneRepo clones a github repo 
+// CloneRepo clones a github repo
 func Clone_repo(args []string) {
 
-    //github repo URL
-    repo := args[0]
+	//github repo URL
+	repo := args[0]
 
-    //verify that is an actual github repo URL
-    if !is_git_url(repo) {
-        // return
-    }
+	//verify that is an actual github repo URL
+	if !is_git_url(repo) {
+		// return
+        fmt.Print("Not Valid Git Url ")
+        return
+	}
 	//clone directory
-	cmd.Dir := "path/to/desired/dir"
-    //Clones Github Repo
-    cmd := exec.Command("git", "clone", repo)
+	cmd.Dir := "/Users/bigsteve/ECE461_team33-1/clone_repo/tester"
+	//Clones Github Repo
+	cmd := exec.Command("git", "clone", repo)
 	err := cmd.Run()
 	if err != nil {
-    // something went wrong
+	    fmt.Print("Something went wrong ")
+        return
+		// something went wrong
 	}
 
 }
-
-//advantage of not only validating if it is really a  git repo, but you can run more validations so as owner (GetOwner()), repo (GetRepo()) etc.
