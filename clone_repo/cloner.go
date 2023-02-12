@@ -23,8 +23,8 @@ func Clone_repo(args []string) {
 	//verify that is an actual github repo URL
 	if !is_git_url(repo) {
 		// return
+        fmt.Print("Not Valid Git Url ")
         return
-		fmt.Print("Not Valid Git Url ")
 	}
 	//clone directory
 	cmd.Dir := "/Users/bigsteve/ECE461_team33-1/clone_repo/tester"
