@@ -2,24 +2,20 @@ package npm
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 )
 
 // used to make the request string
-const npm_registry_url_part string = "https://registry.npmjs.org/%s"
+const Npm_registry_url_part string = "https://registry.npmjs.org/%s"
 
 // alias of map[string]any (same as map[string]interface{}) because typing that is annoying
 type NpmInfo = map[string]any;
 
 // performs the get request and parses the json
-func Get_NpmInfo(pkg string) *NpmInfo {
-	// get request url
-	requestUrl := fmt.Sprintf(npm_registry_url_part, pkg)
-
+func Get_NpmInfo(pkgUrl string) *NpmInfo {
 	// send get request
-	response, responseError := http.Get(requestUrl)
+	response, responseError := http.Get(pkgUrl)
 
 	if (responseError != nil) {
 		return nil

@@ -18,7 +18,8 @@ func Get_minimum_bus_size(gitPath string) int {
 	}
 
 	// parse bus_size from python output
-	i, parseError := strconv.Atoi(strings.TrimSpace(string(output)))
+	outputLines := strings.Split(strings.TrimSpace(string(output)), "\n")
+	i, parseError := strconv.Atoi(outputLines[len(outputLines) - 1])
 
 	if (parseError != nil) {
 		return 0
@@ -36,8 +37,8 @@ func calculate_bus_factor(bus_size int) float32 {
 	return (float32(bus_size) - 1) / float32(bus_size)
 }
 
-// to be called externally, once the repo has been cloned. Don't put white space in gitPath, it will break
-func Get_bus_factor(gitPath string) float32 {
-	bus_size := Get_minimum_bus_size(gitPath)
+// calculates the bus factor by cloning the repo locally then using the truckfactor pyhton library
+func Get_bus_factor(githubUrl string) float32 {
+	bus_size := Get_minimum_bus_size(githubUrl)
 	return calculate_bus_factor(bus_size)
 }
