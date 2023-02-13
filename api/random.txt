@@ -1,0 +1,95 @@
+/*
+package api
+
+import (
+	"encoding/json"
+	"fmt"
+	"log"
+	"net/http"
+	"os/exec"
+	"strings"
+	"time"
+)
+
+type Repo struct {
+	ID            int       `json:"id"`
+	Name          string    `json:"name"`
+	FullName      string    `json:"full_name"`
+	Private       bool      `json:"private"`
+	HTMLURL       string    `json:"html_url"`
+	Description   string    `json:"description"`
+	Fork          bool      `json:"fork"`
+	URL           string    `json:"url"`
+	CreatedAt     time.Time `json:"created_at"`
+	UpdatedAt     time.Time `json:"updated_at"`
+	PushedAt      time.Time `json:"pushed_at"`
+	DefaultBranch string    `json:"default_branch"`
+	License       struct {
+		Key    string `json:"key"`
+		Name   string `json:"name"`
+		SpdxID string `json:"spdx_id"`
+		URL    string `json:"url"`
+		NodeID string `json:"node_id"`
+	} `json:"license"`
+}
+
+func GetRepoData(repoName string) (*Repo, error) {
+	url := fmt.Sprintf("https://api.github.com/repos/%s", repoName)
+	res, err := http.Get(url)
+	if err != nil {
+		log.Println("Error in GET request:", err)
+		return nil, err
+	}
+	defer res.Body.Close()
+
+	var repo Repo
+	if err := json.NewDecoder(res.Body).Decode(&repo); err != nil {
+		log.Println("Error decoding response:", err)
+		return nil, err
+	}
+
+	return &repo, nil
+}
+
+func CloneRepo(repo *Repo) error {
+	cloneCmd := exec.Command("git", "clone", repo.HTMLURL)
+	err := cloneCmd.Run()
+	if err != nil {
+		log.Println("Error cloning repo:", err)
+		return err
+	}
+	return nil
+}
+
+func CheckIfGoProject(repo *Repo) (bool, error) {
+	path := fmt.Sprintf("%s/%s", repo.FullName, repo.DefaultBranch)
+	lsCmd := exec.Command("ls", path)
+	var out bytes.Buffer
+	lsCmd.Stdout = &out
+	err := lsCmd.Run()
+	if err != nil {
+		log.Println("Error listing directory:", err)
+		return false, err
+	}
+	if !strings.Contains(out.String(), "go.mod") {
+		return false, nil
+	}
+	return true, nil
+}
+
+func GetRepo(owner, repo string) (*Repo, error) {
+	url := fmt.Sprintf("https://api.github.com/repos/%s/%s", owner, repo)
+	resp, err := http.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	var repoData Repo
+	if err = json.NewDecoder(resp.Body).Decode(&repoData); err != nil {
+		return nil, err
+	}
+
+	return &repoData, nil
+}
+*/
