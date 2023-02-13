@@ -15,7 +15,7 @@ func printKeys(m any) {
 }
 
 func TestMain(m *testing.M) {
-	pkgs := []string{ "../../ECE461_team33" }
+	pkgs := []string{ "https://github.com/Alethon/ECE461_team33_Alethon" }
 
 	for _, pkg := range pkgs {
 		info := npm.Get_NpmInfo(pkg)
@@ -28,7 +28,7 @@ func TestMain(m *testing.M) {
 			fmt.Println(npm.Get_nested_value_from_info(info, []string{ "maintainers" }))
 			fmt.Println(npm.Get_nested_value_from_info(info, []string{ "contributors" }))
 			
-			// fmt.Printf("Bus size:\t%3d\n", Get_minimum_bus_size(info))
+			fmt.Printf("Bus size:\t%3d\n", Get_minimum_bus_size(pkg))
 		}
 
 	}
