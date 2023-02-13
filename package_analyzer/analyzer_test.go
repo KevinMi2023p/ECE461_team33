@@ -16,8 +16,7 @@ func TestMain(m *testing.M) {
 	}
 
 	for _, pkg := range pkgs {
-		metric := analyze(pkg)
-		
-		fmt.Println(metric)
+		metrics := analyze(pkg)
+		fmt.Println(Metrics_toString(metrics))
 	}
 }

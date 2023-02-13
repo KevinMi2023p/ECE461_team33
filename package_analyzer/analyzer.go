@@ -21,6 +21,12 @@ type Metrics struct {
 	net_score float32
 }
 
+const Metrics_print_format string = "{\"URL\":\"%s\",\"NetScore\":%f,\"RampUp\":%f,\"Correctness\":%f,\"BusFactor\":%f,\"ResponsiveMaintainer\":%f,\"License\":%f}"
+
+func Metrics_toString(metrics Metrics) string {
+	return fmt.Sprintf(Metrics_print_format, metrics.url, metrics.net_score, metrics.ramp_up_time, metrics.correctness, metrics.bus_factor, metrics.responsiveness, metrics.license)
+}
+
 // get the github url from the json, if there is an associated github
 func github_url(info *NpmInfo) *string {
 	// get repo type
@@ -38,6 +44,11 @@ func github_url(info *NpmInfo) *string {
 			if (len(repoUrl) > 4) {
 				// trim leading "git+", whitespace, and trailing '/' from the url
 				repoUrl = strings.Trim(strings.TrimSpace(repoUrl)[4:], "/")
+
+				// remove trailing ".git" from the repo path 
+				if (len(repoUrl) > 4) {
+					repoUrl = repoUrl[:len(repoUrl) - 4]
+				}
 
 				// return the result as a pointer
 				var result *string = new(string)
