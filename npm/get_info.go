@@ -26,6 +26,7 @@ func Get_NpmInfo(pkg string) *NpmInfo {
 	}
 
 	// read response body
+	defer response.Body.Close()
 	bodyBytes, readError := io.ReadAll(response.Body)
 
 	if (readError != nil) {
