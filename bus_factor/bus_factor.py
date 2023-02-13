@@ -31,7 +31,7 @@ eltcsv.parse_numstat_block = parse_numstat_block_fixed
 
 if __name__ == '__main__':
     try:
-        result = main(sys.argv[1].strip('"'), ouputkind=None)[0]
+        result = main(sys.argv[1].strip('"') + '.git', is_url=True, ouputkind=None)[0]
     except:
         result = 0
     print(result)
