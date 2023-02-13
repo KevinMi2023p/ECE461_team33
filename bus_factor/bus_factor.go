@@ -5,11 +5,7 @@ import (
 	"os/exec"
 	"strconv"
 	"strings"
-	"github.com/KevinMi2023p/ECE461_TEAM33/npm"
 )
-
-// alias the type because I'm lazy
-type NpmInfo = npm.NpmInfo
 
 // uses the cloned repository to determine the bus size 
 func Get_minimum_bus_size(gitPath string) int {
