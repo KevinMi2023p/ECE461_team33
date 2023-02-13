@@ -19,6 +19,7 @@ func main() {
 	var argument string = os.Args[1]
 	if argument == "install" {
 		installation.Python_pip_install("GitPython")
+		installation.Python_pip_install("truckfactor")
 	} else if argument == "build" {
 
 	} else if argument == "test" {
