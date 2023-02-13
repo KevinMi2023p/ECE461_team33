@@ -23,7 +23,7 @@ func Get_issues(repoUrl string, token string) *[]RepoIssue {
 	urlParts := strings.Split(strings.Trim(repoUrl, "/"), "/")
 
 	if (len(urlParts) < 2) {
-		fmt.Println("Less than 2 url parts")
+		// fmt.Println("Less than 2 url parts")
 		return nil
 	}
 
@@ -34,8 +34,8 @@ func Get_issues(repoUrl string, token string) *[]RepoIssue {
 	request, requestError := http.NewRequest("GET", requestUrl, nil)
 
 	if (requestError != nil) {
-		fmt.Print("Request Error:\t")
-		fmt.Println(requestError)
+		// fmt.Print("Request Error:\t")
+		// fmt.Println(requestError)
 		return nil
 	}
 
@@ -49,8 +49,8 @@ func Get_issues(repoUrl string, token string) *[]RepoIssue {
 	response, responseError := client.Do(request)
 
 	if (responseError != nil) {
-		fmt.Print("Response Error:\t")
-		fmt.Println(responseError)
+		// fmt.Print("Response Error:\t")
+		// fmt.Println(responseError)
 		return nil
 	}
 
@@ -59,8 +59,8 @@ func Get_issues(repoUrl string, token string) *[]RepoIssue {
 	bodyBytes, readError := io.ReadAll(response.Body)
 
 	if (readError != nil) {
-		fmt.Print("Read Error:\t")
-		fmt.Println(readError)
+		// fmt.Print("Read Error:\t")
+		// fmt.Println(readError)
 		return nil
 	}
 
@@ -74,8 +74,8 @@ func Get_issues(repoUrl string, token string) *[]RepoIssue {
 	jsonError := json.Unmarshal(bodyBytes, data)
 
 	if (jsonError != nil) {
-		fmt.Print("Json Error:\t")
-		fmt.Println(jsonError)
+		// fmt.Print("Json Error:\t")
+		// fmt.Println(jsonError)
 		return nil
 	}
 

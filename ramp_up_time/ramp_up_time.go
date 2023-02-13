@@ -1,9 +1,7 @@
 package rampuptime
 
 import (
-	"fmt"
 	"regexp"
-
 	"github.com/KevinMi2023p/ECE461_TEAM33/npm"
 )
 
@@ -14,14 +12,14 @@ func Ramp_up_score(json_data *npm.NpmInfo) float32 {
 	//https://github.com/npm/registry/blob/master/docs/responses/package-metadata.md
 
 	if json_data == nil {
-		fmt.Println("NPM package hasn't been called yet or doesn't exist")
+		// fmt.Println("NPM package hasn't been called yet or doesn't exist")
 		return 0
 	}
 
 	//Look through map to get README data
 	var readme_string = npm.Get_nested_value_from_info(json_data, []string{"readme"})
 	if readme_string == nil {
-		fmt.Println("Couldn't read README file")
+		// fmt.Println("Couldn't read README file")
 		return 0
 	}
 
@@ -32,7 +30,7 @@ func Ramp_up_score(json_data *npm.NpmInfo) float32 {
 func calculate_score(readme string) float32 {
 	reg, err := regexp.Compile("[^A-Za-z0-9]+")
 	if err != nil {
-		fmt.Println("Regex failed to compile")
+		// fmt.Println("Regex failed to compile")
 		return 0
 	}
 
