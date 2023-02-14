@@ -10,7 +10,7 @@ import (
 // uses the cloned repository to determine the bus size 
 func Get_minimum_bus_size(gitPath string) int {
 	// analyze the cloned repository at gitPath
-	cmd := exec.Command("python", "bus_factor.py", fmt.Sprintf("\"%s\"", gitPath))
+	cmd := exec.Command("python", "bus_factor.py", fmt.Sprintf("\"%s.git\"", gitPath))
 	output, err := cmd.Output()
 
 	if (err != nil) {
