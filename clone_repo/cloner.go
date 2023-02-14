@@ -11,5 +11,6 @@ func CloneRepo(url string, dir string) error {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err := cmd.Run()
+	//if command returns and error then this function returns and error
 	return err
 }
