@@ -37,7 +37,7 @@ func Correctiveness(issues *[]responsiveness.RepoIssue) float32 {
 			// if this state is "open" and made in the past month
 			if state != nil {
 				if state == "open" && duration < (30*24*time.Hour) {
-					i = len(*issues)
+					i = len(labels)
 					open_issue_count += 1
 
 					// check whether the issue is no longer open and made in the past month
