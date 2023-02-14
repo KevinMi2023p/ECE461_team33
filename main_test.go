@@ -1,4 +1,4 @@
-package maintesting
+package main
 
 import (
 	"fmt"
@@ -13,6 +13,9 @@ import (
 )
 
 func Test_all(t *testing.T) {
+
+	// Initially starts with component testing
+
 	pkgs := []string{
 		"xml2js",
 		"bluebird",
@@ -30,6 +33,7 @@ func Test_all(t *testing.T) {
 
 		if info == nil {
 			t.Errorf("Could not get npm registry info about the package %s\n", pkg)
+			// fmt.Println("Could not get npm registry info about the package %s\n", pkg)
 		}
 
 		// get repo type
@@ -42,12 +46,15 @@ func Test_all(t *testing.T) {
 				repoUrl := npm.Get_nested_value_from_info(info, repoUrlKeys)
 				if repoUrl == nil {
 					t.Error("Repo did not have a url")
+					// fmt.Println("Repo did not have a url")
 				}
 			} else {
 				t.Error("Repo type was not git")
+				// fmt.Println("Repo type was not git")
 			}
 		} else {
 			t.Error("Repo type was nil")
+			// fmt.Println("Repo type was nil")
 		}
 
 		// test nonexistent keys
@@ -55,6 +62,7 @@ func Test_all(t *testing.T) {
 		badKeyResult := npm.Get_nested_value_from_info(info, nonkeyTestKeys)
 		if badKeyResult != nil {
 			t.Error("Bad keys had non-nil value")
+			// fmt.Println("Bad keys had non-nil value")
 		}
 
 		//npm section test end -----------------------------------------
@@ -100,32 +108,40 @@ func Test_all(t *testing.T) {
 	}
 
 	// responsiveness test section ends --------------------------------
-}
 
-func MainTest() {
-	// fmt.Println("Testing has begun")
-	// exitVal := m.Run()
-	// fmt.Println("Testing has ended")
-
-	// return exitVal
-
-	var working = false
-	if working {
-		exec.Command("cd", "bus_factor/")
-		cmd := exec.Command("go", "test")
-		output, err := cmd.Output()
-		exec.Command("cd..")
-
-		if err != nil {
-			fmt.Println("Certain test failed")
-			return
-		}
-
-		fmt.Println(string(output))
-		return
+	// Test to see if dependencies installed
+	cmd := exec.Command("pip", "--version")
+	output, err := cmd.Output()
+	if err != nil {
+		t.Error("pip isn't installed", output)
 	}
-
-	fmt.Println("Testing is done manually by going into each director and running:")
-	fmt.Println("go test")
-	fmt.Println("\nNote: not all directories have a testing function")
 }
+
+//Old stuff here
+// func MainTest() {
+// 	// fmt.Println("Testing has begun")
+// 	// exitVal := m.Run()
+// 	// fmt.Println("Testing has ended")
+
+// 	// return exitVal
+
+// 	var working = false
+// 	if working {
+// 		exec.Command("cd", "bus_factor/")
+// 		cmd := exec.Command("go", "test")
+// 		output, err := cmd.Output()
+// 		exec.Command("cd..")
+
+// 		if err != nil {
+// 			fmt.Println("Certain test failed")
+// 			return
+// 		}
+
+// 		fmt.Println(string(output))
+// 		return
+// 	}
+
+// 	fmt.Println("Testing is done manually by going into each director and running:")
+// 	fmt.Println("go test")
+// 	fmt.Println("\nNote: not all directories have a testing function")
+// }
