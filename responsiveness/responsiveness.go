@@ -5,28 +5,19 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"strings"
 	"github.com/KevinMi2023p/ECE461_TEAM33/npm"
 )
 
 // used to make the request string
-const github_issues_url_part string = "https://api.github.com/repos/%s/%s/issues?filter=all&state=all"
+const github_issues_url_part string = "%s/issues?filter=all&state=all"
 const bearer_auth_part string = "Bearer %s"
 
 // alias of map[string]any (same as map[string]interface{}) because typing that is annoying
 type RepoIssue = map[string]any;
 
 // performs the get request and parses the json
-func Get_issues(repoUrl string, token string) *[]RepoIssue {
-	// request url and auth
-	urlParts := strings.Split(strings.Trim(repoUrl, "/"), "/")
-
-	if (len(urlParts) < 2) {
-		// fmt.Println("Less than 2 url parts")
-		return nil
-	}
-
-	requestUrl := fmt.Sprintf(github_issues_url_part, urlParts[len(urlParts) - 2], urlParts[len(urlParts) - 1])//, time.Now().Add(-time.Hour * 30 * 24).Format("2006-01-02T15:04:05Z"))
+func Get_issues(repo_api string, token string) *[]RepoIssue {
+	requestUrl := fmt.Sprintf(github_issues_url_part, repo_api)
 	auth := fmt.Sprintf(bearer_auth_part, token)
 
 	// create new request
