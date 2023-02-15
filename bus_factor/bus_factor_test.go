@@ -15,7 +15,7 @@ func printKeys(m any) {
 }
 
 func TestMain(m *testing.M) {
-	pkgs := []string{ "https://github.com/Alethon/ECE461_team33_Alethon" }
+	pkgs := []string{  }
 
 	for _, pkg := range pkgs {
 		info := npm.Get_NpmInfo(pkg)

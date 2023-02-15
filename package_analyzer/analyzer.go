@@ -112,12 +112,16 @@ func Analyze(url string) *Metrics {
 
 		// bus factor
 		metrics.Bus_factor = 0
-		repo_path := "../temp/" + submatches[2]
+		repo_path := "temp/" + submatches[2]
 		abs_path, path_error := filepath.Abs(repo_path)
-		if (path_error != nil) {
-			clone_error := CloneRepo(metrics.Url + ".git", abs_path)
-			if (clone_error != nil) {
-				metrics.Bus_factor = Get_bus_factor(abs_path)
+		if (path_error == nil) {
+			path_error = os.MkdirAll(abs_path, 0755)
+			if (path_error == nil) {
+				clone_error := CloneRepo(metrics.Url + ".git", abs_path)
+				if (clone_error == nil) {
+					// fmt.Println("Calling bus_factor")
+					metrics.Bus_factor = Get_bus_factor(abs_path)
+				}
 			}
 		}
 
@@ -164,12 +168,16 @@ func Analyze(url string) *Metrics {
 			issues = Get_issues(repo_api, token, client)
 
 			// bus factor
-			repo_path := "../temp/" + submatches[2]
+			repo_path := "temp/" + submatches[2]
 			abs_path, path_error := filepath.Abs(repo_path)
-			if (path_error != nil) {
-				clone_error := CloneRepo(*githubUrl + ".git", abs_path)
-				if (clone_error != nil) {
-					metrics.Bus_factor = Get_bus_factor(abs_path)
+			if (path_error == nil) {
+				path_error = os.MkdirAll(abs_path, 0755)
+				if (path_error == nil) {
+					clone_error := CloneRepo(*githubUrl + ".git", abs_path)
+					if (clone_error == nil) {
+						// fmt.Println("Calling bus_factor")
+						metrics.Bus_factor = Get_bus_factor(abs_path)
+					}
 				}
 			}
 		}
