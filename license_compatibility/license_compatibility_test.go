@@ -1,4 +1,5 @@
-package licensecompatibility
+package license_compatibility
+
 import (
 	_"os"
 	"testing"
