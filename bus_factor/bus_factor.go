@@ -10,7 +10,8 @@ import (
 // uses the cloned repository to determine the bus size 
 func Get_minimum_bus_size(gitPath string) int {
 	// analyze the cloned repository at gitPath
-	cmd := exec.Command("python", "bus_factor.py", fmt.Sprintf("\"%s\"", gitPath))
+	repo_url := fmt.Sprintf("\"%s.git\"", gitPath)
+	cmd := exec.Command("python", "bus_factor.py", repo_url)
 	output, err := cmd.Output()
 
 	if (err != nil) {
@@ -34,7 +35,7 @@ func calculate_bus_factor(bus_size int) float32 {
 		return 0.0
 	}
 
-	return (float32(bus_size) - 1) / float32(bus_size)
+	return (float32(bus_size) - 0.75) / float32(bus_size)
 }
 
 // calculates the bus factor by cloning the repo locally then using the truckfactor pyhton library
