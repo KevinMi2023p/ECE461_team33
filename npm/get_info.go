@@ -6,9 +6,6 @@ import (
 	"net/http"
 )
 
-// used to make the request string
-const Npm_registry_url_part string = "https://registry.npmjs.org/%s"
-
 // alias of map[string]any (same as map[string]interface{}) because typing that is annoying
 type NpmInfo = map[string]any;
 
