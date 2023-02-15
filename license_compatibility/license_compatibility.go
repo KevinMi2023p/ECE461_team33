@@ -1,22 +1,21 @@
-package licensecompatibility
+package license_compatibility
 
 import (
 	_"os"
 	"strings"
-	"fmt"
 	"github.com/KevinMi2023p/ECE461_TEAM33/npm"
 )
 
 func License_compatibity(json_data *npm.NpmInfo) float32 {
 	if json_data == nil {
-		fmt.Println("NPM package doesn't exist or hasn't been called")
+		// fmt.Println("NPM package doesn't exist or hasn't been called")
 		return 0
 	}
 
 	// Get README data from map
 	var github_readme_str = npm.Get_nested_value_from_info(json_data, []string{"readme"})
 	if github_readme_str == nil {
-		fmt.Println("README file couldn't be read")
+		// fmt.Println("README file couldn't be read")
 		return 0
 	}
 
