@@ -101,7 +101,7 @@ func analyze(url string) *Metrics {
 
 		// repo issues
 		token = os.Getenv("GITHUB_TOKEN")
-		// issues = Get_issues(repo_api, token, client)
+		issues = Get_issues(repo_api, token, client)
 
 		// responsiveness
 		metrics.responsiveness = Responsiveness(issues)
@@ -149,7 +149,7 @@ func analyze(url string) *Metrics {
 			
 			// repo issues
 			token = os.Getenv("GITHUB_TOKEN")
-			// issues = Get_issues(repo_api, token, client)
+			issues = Get_issues(repo_api, token, client)
 
 			// bus factor
 			metrics.bus_factor = Get_bus_factor(*githubUrl)
