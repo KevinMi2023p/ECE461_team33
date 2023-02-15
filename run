@@ -27,7 +27,7 @@ elif [[ $1 == "test" ]]; then
     echo -e "Initializing component testing\n"
 
     # Loops through each components to test them
-    components=("bus_factor/" "license_compatibility/" "npm/" "package_analyzer/" "rampuptime/" "responsiveness/")
+    components=("bus_factor/" "clone_repo/" "correctiveness_calc/" "license_compatibility/" "npm/" "package_analyzer/" "rampuptime/" "responsiveness/")
     for i in "${components[@]}"
     do 
         echo -e "\nComponent testing for $i"
