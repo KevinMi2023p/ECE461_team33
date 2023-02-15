@@ -15,7 +15,7 @@ func printKeys(m any) {
 }
 
 func TestMain(m *testing.M) {
-	pkgs := []string{ `C:\Users\Jaime\vscode\ECE461_team33_Alethon\temp\browserify` }
+	pkgs := []string{  }
 
 	for _, pkg := range pkgs {
 		info := npm.Get_NpmInfo(pkg)
