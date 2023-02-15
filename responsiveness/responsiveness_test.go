@@ -2,25 +2,18 @@ package responsiveness
 
 import (
 	"fmt"
-	"net/http"
 	"os"
 	"testing"
 )
 
 func TestMain(m *testing.M) {
-	repos := []string{
-		"https://api.github.com/repos/KevinMi2023p/ECE461_TEAM33",
-		"https://api.github.com/repos/lodash/lodash",
-	}
-
+	repos := []string{ "https://github.com/KevinMi2023p/ECE461_TEAM33/" }
 	token := os.Getenv("GITHUB_TOKEN")
 
 	fmt.Printf("GitHub token:\t%s\n\n", token)
 	
-	client := &http.Client{}
-
 	for _, repo := range repos {
-		issues := Get_issues(repo, token, client)
+		issues := Get_issues(repo, token)
 		fmt.Printf("Responsiveness for %s:\t%f\n", repo, Responsiveness(issues))
 	}
 }
