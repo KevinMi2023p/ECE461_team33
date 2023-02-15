@@ -4,22 +4,24 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"regexp"	
+	"regexp"
+
 	. "github.com/KevinMi2023p/ECE461_TEAM33/bus_factor"
-	. "github.com/KevinMi2023p/ECE461_TEAM33/npm"
-	. "github.com/KevinMi2023p/ECE461_TEAM33/ramp_up_time"
-	. "github.com/KevinMi2023p/ECE461_TEAM33/responsiveness"
+	correctiveness "github.com/KevinMi2023p/ECE461_TEAM33/correctiveness_calc"
 	. "github.com/KevinMi2023p/ECE461_TEAM33/license_compatibility"
+	. "github.com/KevinMi2023p/ECE461_TEAM33/npm"
+	. "github.com/KevinMi2023p/ECE461_TEAM33/rampuptime"
+	. "github.com/KevinMi2023p/ECE461_TEAM33/responsiveness"
 )
 
 type Metrics struct {
-	url string
-	bus_factor float32
-	ramp_up_time float32
-	responsiveness float32
-	correctness float32
-	license float32
-	net_score float32
+	Url            string
+	Bus_factor     float32
+	Ramp_up_time   float32
+	Responsiveness float32
+	Correctness    float32
+	License        float32
+	Net_score      float32
 }
 
 var Npm_package_regex *regexp.Regexp = regexp.MustCompile(`^https://www\.npmjs\.com/package/([\w-\.]+)$`)
@@ -35,27 +37,27 @@ const Github_api_part string = "https://api.github.com/repos/%s/%s"
 const Metrics_print_format string = "{\"URL\":\"%s\",\"NetScore\":%f,\"RampUp\":%f,\"Correctness\":%f,\"BusFactor\":%f,\"ResponsiveMaintainer\":%f,\"License\":%f}"
 
 func Metrics_toString(metrics Metrics) string {
-	return fmt.Sprintf(Metrics_print_format, metrics.url, metrics.net_score, metrics.ramp_up_time, metrics.correctness, metrics.bus_factor, metrics.responsiveness, metrics.license)
+	return fmt.Sprintf(Metrics_print_format, metrics.Url, metrics.Net_score, metrics.Ramp_up_time, metrics.Correctness, metrics.Bus_factor, metrics.Responsiveness, metrics.License)
 }
 
 // get the github url from the json, if there is an associated github
 func github_url(info *NpmInfo) *string {
 	// get repo type
-	repoTypeKeys := []string{ "repository", "type" }
+	repoTypeKeys := []string{"repository", "type"}
 	repoType := Get_nested_value_from_info(info, repoTypeKeys)
 
 	// if the repo is a git repo
-	if (repoType != nil && repoType == "git") {
+	if repoType != nil && repoType == "git" {
 		// get repo address
-		repoUrlAny := Get_nested_value_from_info(info, []string{ "repository", "url" })
-		if (repoUrlAny != nil) {
+		repoUrlAny := Get_nested_value_from_info(info, []string{"repository", "url"})
+		if repoUrlAny != nil {
 			repoUrl := repoUrlAny.(string)
-			if (!Package_github_url_regex.MatchString(repoUrl)) {
+			if !Package_github_url_regex.MatchString(repoUrl) {
 				return nil
 			}
-			
+
 			submatches := Package_github_url_regex.FindStringSubmatch(repoUrl)
-			if (submatches == nil || len(submatches) < 3) {
+			if submatches == nil || len(submatches) < 3 {
 				return nil
 			}
 
@@ -72,10 +74,10 @@ func github_url(info *NpmInfo) *string {
 
 // calculates weighted net score from other metrics
 func net_score(metrics *Metrics) float32 {
-	return (metrics.net_score + metrics.bus_factor + metrics.ramp_up_time + metrics.responsiveness + metrics.correctness) / 5
+	return (metrics.Net_score + metrics.Bus_factor + metrics.Ramp_up_time + metrics.Responsiveness + metrics.Correctness) / 5
 }
 
-func analyze(url string) *Metrics {
+func Analyze(url string) *Metrics {
 	var metrics *Metrics
 	var submatches []string
 	var token string
@@ -83,16 +85,16 @@ func analyze(url string) *Metrics {
 	var issues *[]RepoIssue = nil
 	var client *http.Client
 
-	if (Github_package_regex.MatchString(url)) {
+	if Github_package_regex.MatchString(url) {
 		// get the safe url
 		submatches = Github_package_regex.FindStringSubmatch(url)
-		if (submatches == nil || len(submatches) < 3) {
+		if submatches == nil || len(submatches) < 3 {
 			return nil
 		}
 
 		metrics = new(Metrics)
-		metrics.url = fmt.Sprintf(Github_url_part, submatches[1], submatches[2])
-	
+		metrics.Url = fmt.Sprintf(Github_url_part, submatches[1], submatches[2])
+
 		// client
 		client = &http.Client{}
 
@@ -104,71 +106,71 @@ func analyze(url string) *Metrics {
 		issues = Get_issues(repo_api, token, client)
 
 		// responsiveness
-		metrics.responsiveness = Responsiveness(issues)
+		metrics.Responsiveness = Responsiveness(issues)
 
 		// bus factor
-		metrics.bus_factor = Get_bus_factor(metrics.url)
+		metrics.Bus_factor = Get_bus_factor(metrics.Url)
 
 		// ramp up time
-		metrics.ramp_up_time = Ramp_up_score_github(repo_api, token, client)
-	
+		metrics.Ramp_up_time = Ramp_up_score_github(repo_api, token, client)
+
 		// correctness
-		metrics.correctness = 0
-	
+		metrics.Correctness = correctiveness.Correctiveness(issues)
+
 		// net score
-		metrics.net_score = net_score(metrics)
-	} else if (Npm_package_regex.MatchString(url)) {
+		metrics.Net_score = net_score(metrics)
+	} else if Npm_package_regex.MatchString(url) {
 		// get the safe url
 		submatches = Npm_package_regex.FindStringSubmatch(url)
-		if (submatches == nil || len(submatches) < 2) {
+		if submatches == nil || len(submatches) < 2 {
 			return nil
 		}
 
 		metrics = new(Metrics)
-		metrics.url = url
+		metrics.Url = url
 
 		// bus factor
-		metrics.bus_factor = 0
-		
+		metrics.Bus_factor = 0
+
 		// get npm info
 		reg_url := fmt.Sprintf(Npm_registry_url_part, submatches[1])
 		info := Get_NpmInfo(reg_url)
-		
+
 		// get the github url
 		githubUrl := github_url(info)
 
-		if (githubUrl != nil && Github_package_regex.MatchString(*githubUrl)) {
+		if githubUrl != nil && Github_package_regex.MatchString(*githubUrl) {
 			// client
 			client = &http.Client{}
 
 			// get the safe url
 			submatches = Github_package_regex.FindStringSubmatch(*githubUrl)
-			
+
 			// github repo api
 			repo_api = fmt.Sprintf(Github_api_part, submatches[1], submatches[2])
-			
+
 			// repo issues
 			token = os.Getenv("GITHUB_TOKEN")
 			issues = Get_issues(repo_api, token, client)
 
 			// bus factor
-			metrics.bus_factor = Get_bus_factor(*githubUrl)
+			metrics.Bus_factor = Get_bus_factor(*githubUrl)
 		}
-		
+
 		// responsiveness
-		metrics.responsiveness = Responsiveness(issues)
-	
+		metrics.Responsiveness = Responsiveness(issues)
+
 		// ramp up time
-		metrics.ramp_up_time = Ramp_up_score_npm(info)
-	
+		metrics.Ramp_up_time = Ramp_up_score_npm(info)
+
 		// correctness
-		metrics.correctness = 0
+		metrics.Correctness = correctiveness.Correctiveness(issues)
 
 		// license
-		metrics.license = License_compatibity(info)
-	
+		metrics.License = License_compatibity(info)
+
 		// net score
-		metrics.net_score = net_score(metrics)
+		metrics.Net_score = net_score(metrics)
 	} else {
 		metrics = nil
 	}
