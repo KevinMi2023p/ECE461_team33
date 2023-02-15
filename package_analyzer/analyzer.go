@@ -4,9 +4,11 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"path/filepath"
 	"regexp"
 
 	. "github.com/KevinMi2023p/ECE461_TEAM33/bus_factor"
+	. "github.com/KevinMi2023p/ECE461_TEAM33/clone_repo"
 	correctiveness "github.com/KevinMi2023p/ECE461_TEAM33/correctiveness_calc"
 	. "github.com/KevinMi2023p/ECE461_TEAM33/license_compatibility"
 	. "github.com/KevinMi2023p/ECE461_TEAM33/npm"
@@ -109,7 +111,15 @@ func Analyze(url string) *Metrics {
 		metrics.Responsiveness = Responsiveness(issues)
 
 		// bus factor
-		metrics.Bus_factor = Get_bus_factor(metrics.Url)
+		metrics.Bus_factor = 0
+		repo_path := "../temp/" + submatches[2]
+		abs_path, path_error := filepath.Abs(repo_path)
+		if (path_error != nil) {
+			clone_error := CloneRepo(metrics.Url + ".git", abs_path)
+			if (clone_error != nil) {
+				metrics.Bus_factor = Get_bus_factor(abs_path)
+			}
+		}
 
 		// ramp up time
 		metrics.Ramp_up_time = Ramp_up_score_github(repo_api, token, client)
@@ -154,7 +164,14 @@ func Analyze(url string) *Metrics {
 			issues = Get_issues(repo_api, token, client)
 
 			// bus factor
-			metrics.Bus_factor = Get_bus_factor(*githubUrl)
+			repo_path := "../temp/" + submatches[2]
+			abs_path, path_error := filepath.Abs(repo_path)
+			if (path_error != nil) {
+				clone_error := CloneRepo(*githubUrl + ".git", abs_path)
+				if (clone_error != nil) {
+					metrics.Bus_factor = Get_bus_factor(abs_path)
+				}
+			}
 		}
 
 		// responsiveness

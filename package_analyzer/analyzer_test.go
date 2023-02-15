@@ -20,7 +20,7 @@ func TestMain(m *testing.M) {
 		// if (Github_package_regex.MatchString(url)) {
 		// 	fmt.Printf("%s\t:\t%s\t%s\n", url, Github_package_regex.FindAllStringSubmatch(url, -1)[0][1], Github_package_regex.FindAllStringSubmatch(url, -1)[0][2])
 		// }
-		metrics := analyze(url)
+		metrics := Analyze(url)
 		if (metrics != nil) {
 			fmt.Println(Metrics_toString(*metrics))
 		}
