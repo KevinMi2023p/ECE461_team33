@@ -33,6 +33,24 @@ func main() {
 	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanLines)
 
+	// delete old temp folder if it exists
+	temp_folder_path := "temp"
+	_, path_error := os.Stat(temp_folder_path)
+	if (path_error == nil) {
+		path_error = os.RemoveAll(temp_folder_path)
+		if (path_error != nil) {
+			fmt.Println("Error deleting the old temp folder")
+			os.Exit(1)
+		}
+	}
+
+	// create the temp folder
+	path_error = os.Mkdir(temp_folder_path, 0755)
+	if (path_error != nil) {
+		fmt.Println("Error creating temp folder")
+		os.Exit(1)
+	}
+
 	// Analyze each line
 	for scanner.Scan() {
 		url_on_line := scanner.Text()
@@ -43,6 +61,8 @@ func main() {
 		}
 	}
 
+	path_error = os.RemoveAll(temp_folder_path)
+
 	// Sort what we're about to output
 	sort.Slice(final_output, func(i, j int) bool {
 		return final_output[i].Net_score >= final_output[j].Net_score
@@ -50,7 +70,6 @@ func main() {
 
 	// Prints out the output, with each datapoint having it's own line
 	for _, obj := range final_output {
-		// fmt.Println(package_analyzer.Metrics_toString(obj))
 		fmt.Println(package_analyzer.Metrics_toString(obj))
 	}
 
