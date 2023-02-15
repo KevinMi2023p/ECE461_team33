@@ -2,6 +2,7 @@ package correctiveness
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 	"testing"
 
@@ -14,8 +15,10 @@ func TestMain(m *testing.M) {
 
 	fmt.Printf("GitHub token:\t%s\n\n", token)
 
+	client := &http.Client{}
+
 	for _, repo := range repos {
-		issues := responsiveness.Get_issues(repo, token)
+		issues := responsiveness.Get_issues(repo, token, client)
 		fmt.Printf("Correctiveness for %s:\t%f\n", repo, Correctiveness(issues))
 	}
 }

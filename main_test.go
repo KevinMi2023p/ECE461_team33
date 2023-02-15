@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 	"os/exec"
 	"testing"
@@ -102,8 +103,10 @@ func Test_all(t *testing.T) {
 
 	fmt.Printf("GitHub token:\t%s\n\n", token)
 
+	client := &http.Client{}
+
 	for _, repo := range repos {
-		issues := responsiveness.Get_issues(repo, token)
+		issues := responsiveness.Get_issues(repo, token, client)
 		fmt.Printf("Responsiveness for %s:\t%f\n", repo, responsiveness.Responsiveness(issues))
 	}
 
