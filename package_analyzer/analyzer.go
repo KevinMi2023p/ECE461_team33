@@ -3,7 +3,6 @@ package package_analyzer
 import (
 	"fmt"
 	"os"
-	"strings"
 
 	. "github.com/KevinMi2023p/ECE461_TEAM33/bus_factor"
 	. "github.com/KevinMi2023p/ECE461_TEAM33/npm"
