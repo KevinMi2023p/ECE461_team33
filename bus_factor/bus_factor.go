@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-// uses the cloned repository to determine the bus size 
+// uses the cloned repository to determine the bus size.
 func Get_minimum_bus_size(git_path string) int {
 	// analyze the cloned repository at gitPath
 	repo_url := fmt.Sprintf("\"%s\"", git_path)
