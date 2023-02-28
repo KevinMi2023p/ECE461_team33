@@ -1,7 +1,8 @@
-# ECE461_team33
+ECE 461 Project
 
-Kevin Mi :)  
-Stephen Iwu $$  
-Roan Numa $$  
-Jamie Laster  
-![alt text](https://github.com/KevinMi2023p/ECE461_team33/blob/main/cheeto%20cat.png)  
+Team:
+1) Jack Knox
+2) Salim Al Salmi
+3) Haani Tharak
+
+Test
